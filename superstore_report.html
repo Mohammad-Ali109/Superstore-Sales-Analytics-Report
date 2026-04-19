@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Superstore Sales Analytics Report</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #F0F4F8; color: #1a202c; }
+
+  .header {
+    background: linear-gradient(135deg, #1B4F72 0%, #2E86AB 60%, #028090 100%);
+    color: white; padding: 50px 40px 40px; text-align: center;
+  }
+  .header h1 { font-size: 2.4em; font-weight: 800; letter-spacing: -0.5px; }
+  .header p { font-size: 1.1em; opacity: 0.85; margin-top: 10px; }
+  .header .tag { display: inline-block; background: rgba(255,255,255,0.18); border-radius: 20px; padding: 4px 14px; font-size: 0.82em; margin-top: 12px; }
+
+  .kpi-bar { display: flex; gap: 20px; padding: 30px 40px; background: white; box-shadow: 0 2px 12px rgba(0,0,0,0.06); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 150px; text-align: center; padding: 18px; border-radius: 12px; background: #F8FAFC; border-top: 4px solid; }
+  .kpi.blue { border-color: #2E86AB; }
+  .kpi.green { border-color: #2D6A4F; }
+  .kpi.orange { border-color: #F18F01; }
+  .kpi.red { border-color: #C73E1D; }
+  .kpi .val { font-size: 1.9em; font-weight: 800; color: #1B4F72; }
+  .kpi .lbl { font-size: 0.82em; color: #64748b; margin-top: 4px; font-weight: 500; }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 30px 40px; }
+  .section-title { font-size: 1.5em; font-weight: 700; color: #1B4F72; margin: 36px 0 18px; padding-left: 14px; border-left: 5px solid #2E86AB; }
+  .chart-grid { display: grid; gap: 24px; }
+  .chart-grid.two { grid-template-columns: 1fr 1fr; }
+  .chart-grid.one { grid-template-columns: 1fr; }
+  .chart-card { background: white; border-radius: 14px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); overflow: hidden; }
+  .chart-card img { width: 100%; display: block; }
+  .chart-card .caption { padding: 14px 18px; font-size: 0.88em; color: #475569; border-top: 1px solid #f0f0f0; background: #FAFBFC; }
+  .chart-card .caption strong { color: #1B4F72; }
+
+  .insights-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 8px; }
+  .insight-card { background: white; border-radius: 12px; padding: 22px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .insight-card .icon { font-size: 1.8em; margin-bottom: 10px; }
+  .insight-card h3 { font-size: 0.98em; font-weight: 700; color: #1B4F72; margin-bottom: 8px; }
+  .insight-card p { font-size: 0.87em; color: #475569; line-height: 1.6; }
+  .insight-card.warning { border-left: 4px solid #C73E1D; }
+  .insight-card.success { border-left: 4px solid #2D6A4F; }
+  .insight-card.info { border-left: 4px solid #2E86AB; }
+  .insight-card.caution { border-left: 4px solid #F18F01; }
+
+  .rec-list { background: white; border-radius: 14px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); padding: 28px; margin-top: 8px; }
+  .rec-item { display: flex; gap: 18px; padding: 16px 0; border-bottom: 1px solid #f0f0f0; align-items: flex-start; }
+  .rec-item:last-child { border-bottom: none; }
+  .rec-num { width: 34px; height: 34px; min-width: 34px; background: #1B4F72; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9em; }
+  .rec-item h4 { font-size: 0.97em; font-weight: 700; color: #1B4F72; margin-bottom: 4px; }
+  .rec-item p { font-size: 0.86em; color: #475569; line-height: 1.5; }
+
+  .footer { text-align: center; padding: 30px; color: #94a3b8; font-size: 0.82em; margin-top: 20px; }
+
+  @media (max-width: 768px) {
+    .chart-grid.two { grid-template-columns: 1fr; }
+    .insights-grid { grid-template-columns: 1fr; }
+    .kpi-bar { padding: 20px; }
+    .container { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📊 Superstore Sales Analytics</h1>
+  <p>Comprehensive Retail Performance Dashboard — 2021 to 2024</p>
+  <span class="tag">9,994 Transactions · 4 Regions · 3 Categories</span>
+</div>
+
+<div class="kpi-bar">
+  <div class="kpi blue"><div class="val">$6.6M</div><div class="lbl">Total Revenue</div></div>
+  <div class="kpi green"><div class="val">$12.9K</div><div class="lbl">Total Profit</div></div>
+  <div class="kpi orange"><div class="val">0.2%</div><div class="lbl">Profit Margin</div></div>
+  <div class="kpi red"><div class="val">9,994</div><div class="lbl">Total Orders</div></div>
+  <div class="kpi blue"><div class="val">West</div><div class="lbl">Top Region</div></div>
+  <div class="kpi green"><div class="val">Technology</div><div class="lbl">Most Profitable Category</div></div>
+</div>
+
+<div class="container">
+
+  <div class="section-title">Sales Trends Over Time</div>
+  <div class="chart-grid one">
+    <div class="chart-card">
+      <img src="chart1_sales_trend.png" alt="Monthly Sales Trend">
+      <div class="caption"><strong>Monthly Sales (2021–2024):</strong> Sales show consistent seasonal peaks in Q4 (Oct–Dec), aligning with holiday shopping. Year-over-year growth is visible with a positive upward trajectory. The 3-month rolling average (red dashed) smooths out volatility and confirms the upward trend.</div>
+    </div>
+  </div>
+
+  <div class="section-title">Annual Performance by Category</div>
+  <div class="chart-grid one">
+    <div class="chart-card">
+      <img src="chart6_yearly.png" alt="Annual Sales by Category">
+      <div class="caption"><strong>Year-on-Year Category Sales:</strong> Technology and Furniture dominate revenue. Office Supplies grows steadily. All three categories show positive year-over-year growth, with Technology being the most volatile.</div>
+    </div>
+  </div>
+
+  <div class="section-title">Category & Regional Performance</div>
+  <div class="chart-grid two">
+    <div class="chart-card">
+      <img src="chart2_category.png" alt="Sales vs Profit by Category">
+      <div class="caption"><strong>Category Profitability Alert:</strong> Furniture generates $2.66M in revenue but shows a <strong>negative profit</strong> of −$193K. Office Supplies and Technology are the true profit drivers despite lower revenues.</div>
+    </div>
+    <div class="chart-card">
+      <img src="chart3_region.png" alt="Regional Performance">
+      <div class="caption"><strong>Regional Insight:</strong> The West region leads in revenue ($2.1M). However, margin performance is inconsistent — South has the healthiest margin at ~0.8%, while East is slightly negative. Central has potential for margin improvement.</div>
+    </div>
+  </div>
+
+  <div class="section-title">Discount Impact & Sub-Category Profitability</div>
+  <div class="chart-grid two">
+    <div class="chart-card">
+      <img src="chart4_discount.png" alt="Discount vs Profit">
+      <div class="caption"><strong>Discount Erosion:</strong> A clear negative correlation between discount rate and profit. Orders with discounts above 20% consistently turn unprofitable. The trend line (red dashed) confirms discount rates are the #1 profitability killer.</div>
+    </div>
+    <div class="chart-card">
+      <img src="chart5_subcategory.png" alt="Profit by Sub-Category">
+      <div class="caption"><strong>Sub-Category Winners & Losers:</strong> Accessories, Phones, and Copiers drive the most profit. Furniture sub-categories (Tables, Bookcases, Chairs) are deeply unprofitable, requiring urgent pricing or discount strategy review.</div>
+    </div>
+  </div>
+
+  <div class="section-title">Key Business Insights</div>
+  <div class="insights-grid">
+    <div class="insight-card warning">
+      <div class="icon">🪑</div>
+      <h3>Furniture Is a Profit Drain</h3>
+      <p>With $2.66M in sales but -$193K in profit, Furniture has a deeply negative margin. Aggressive discounting is likely the culprit. Immediate review of discount policies is critical.</p>
+    </div>
+    <div class="insight-card success">
+      <div class="icon">💻</div>
+      <h3>Technology Leads Profitability</h3>
+      <p>Technology products generate $137K in profit from $2.99M in sales (~4.6% margin). Phones, Copiers, and Accessories are the star performers — worth prioritizing in marketing.</p>
+    </div>
+    <div class="insight-card info">
+      <div class="icon">📦</div>
+      <h3>Office Supplies: High Margin, Low Revenue</h3>
+      <p>Office Supplies delivers the healthiest margin (~7.1%) despite lower revenue. Scaling this category through targeted promotions and bundle deals could significantly lift profits.</p>
+    </div>
+    <div class="insight-card caution">
+      <div class="icon">🏷️</div>
+      <h3>Discounts Above 20% Destroy Profits</h3>
+      <p>The discount vs. profit scatter shows that any order with a 20%+ discount becomes unprofitable. A cap on maximum discount levels is strongly recommended.</p>
+    </div>
+    <div class="insight-card info">
+      <div class="icon">🌎</div>
+      <h3>West Region is the Revenue Leader</h3>
+      <p>The West region dominates with $2.14M in sales. However, South shows the best profit margin, suggesting West may be over-discounting to drive volume.</p>
+    </div>
+    <div class="insight-card success">
+      <div class="icon">📈</div>
+      <h3>Strong Q4 Seasonality</h3>
+      <p>Sales spike consistently in Q4 across all years. Pre-positioning inventory and marketing budgets for October–December could amplify this seasonal opportunity.</p>
+    </div>
+  </div>
+
+  <div class="section-title">Strategic Recommendations</div>
+  <div class="rec-list">
+    <div class="rec-item">
+      <div class="rec-num">1</div>
+      <div><h4>Cap Discounts at 20% Across All Categories</h4><p>Implement a hard ceiling on discount rates at 20%. Orders above this threshold are consistently loss-making. Use A/B testing to evaluate whether lower discounts maintain conversion rates.</p></div>
+    </div>
+    <div class="rec-item">
+      <div class="rec-num">2</div>
+      <div><h4>Conduct Full Furniture Category Audit</h4><p>Furniture's negative profitability demands immediate action. Review cost structure, pricing strategy, and discount policies for Tables, Bookcases, and Chairs specifically.</p></div>
+    </div>
+    <div class="rec-item">
+      <div class="rec-num">3</div>
+      <div><h4>Scale Office Supplies via Bundle Promotions</h4><p>With the best profit margins, Office Supplies deserves more revenue focus. Create bundles, cross-sell with Technology, and launch targeted campaigns in corporate and home office segments.</p></div>
+    </div>
+    <div class="rec-item">
+      <div class="rec-num">4</div>
+      <div><h4>Double Down on Technology Star Products</h4><p>Phones, Accessories, and Copiers are best-in-class profit generators. Allocate larger marketing budgets, negotiate better supplier terms, and ensure strong inventory levels heading into Q4.</p></div>
+    </div>
+    <div class="rec-item">
+      <div class="rec-num">5</div>
+      <div><h4>Implement Regional Discount Governance</h4><p>East region's near-negative margin suggests regional managers may be using excessive discounts to hit volume targets. Introduce margin-based performance KPIs alongside revenue targets.</p></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">Superstore Sales Analytics Report · Generated April 2026 · Data: 9,994 transactions, 2021–2024</div>
+
+</body>
+</html>
