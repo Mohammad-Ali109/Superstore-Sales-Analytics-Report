@@ -1,5 +1,6 @@
 ##Superstore Sales Analytics Report
-🔍 Key Insights from the Analysis
+
+#🔍 Key Insights from the Analysis
 Profitability Crisis in Furniture — Despite being the #2 revenue category at $2.66M, Furniture is the only loss-making category at −$193K profit. Aggressive discounting is the root cause.
 Technology is the Star — $137K profit on $3M revenue (~4.6% margin). Accessories, Phones, and Copiers are the top three sub-categories by profit and deserve prioritized investment.
 The 20% Discount Rule — The scatter analysis reveals a hard break-even point: any discount above 20% reliably produces a loss. This single policy change could unlock $50K+ in annual profit recovery.
